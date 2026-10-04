@@ -21,3 +21,11 @@ module "network" {
   resource_group_name = azurerm_resource_group.main.name
   tags                = local.tags
 }
+
+module "acr" {
+  source              = "../../modules/acr"
+  project             = var.project
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
+  tags                = local.tags
+}
