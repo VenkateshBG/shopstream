@@ -1,0 +1,4 @@
+resource_group_name  = "rg-shopstream-tfstate"
+storage_account_name = "sttfstatexxxxxx"
+container_name       = "tfstate"
+key                  = "dev.terraform.tfstate"
