@@ -29,3 +29,12 @@ module "acr" {
   resource_group_name = azurerm_resource_group.main.name
   tags                = local.tags
 }
+
+module "budget" {
+  source          = "../../modules/budget"
+  name            = "budget-${var.project}"
+  subscription_id = var.subscription_id
+  amount          = var.budget_amount
+  start_date      = var.budget_start_date
+  contact_emails  = var.alert_emails
+}
