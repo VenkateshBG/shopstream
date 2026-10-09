@@ -13,6 +13,12 @@ resource "azurerm_kubernetes_cluster" "this" {
     os_disk_size_gb = 32
     os_disk_type    = "Managed"
     vnet_subnet_id  = var.subnet_id
+
+     upgrade_settings {
+      max_surge                     = "10%"
+      drain_timeout_in_minutes      = 0
+      node_soak_duration_in_minutes = 0
+    }
   }
 
   identity {
@@ -27,4 +33,11 @@ resource "azurerm_kubernetes_cluster" "this" {
     service_cidr        = "10.0.0.0/16"
     dns_service_ip      = "10.0.0.10"
   }
+}
+
+resource "azurerm_role_assignment" "acr_pull" {
+  scope                            = var.acr_id
+  role_definition_name             = "AcrPull"
+  principal_id                     = azurerm_kubernetes_cluster.this.kubelet_identity[0].object_id
+  skip_service_principal_aad_check = true
 }

@@ -37,3 +37,8 @@ variable "tags" {
   type        = map(string)
   description = "Tags applied to resources"
 }
+
+variable "acr_id" {
+  type        = string
+  description = "ID of the container registry the nodes may pull from"
+}

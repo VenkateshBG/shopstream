@@ -47,5 +47,6 @@ module "aks" {
   subnet_id           = module.network.aks_subnet_id
   node_count          = var.aks_node_count
   vm_size             = var.aks_vm_size
+  acr_id              = module.acr.id
   tags                = local.tags
 }
