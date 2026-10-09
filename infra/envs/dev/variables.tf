@@ -37,3 +37,15 @@ variable "alert_emails" {
   type        = list(string)
   description = "Emails for budget alerts"
 }
+
+variable "aks_node_count" {
+  type        = number
+  description = "Number of AKS worker nodes"
+  default     = 1
+}
+
+variable "aks_vm_size" {
+  type        = string
+  description = "VM size for AKS nodes"
+  default     = "Standard_D2nls_v6"
+}

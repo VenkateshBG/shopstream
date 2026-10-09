@@ -38,3 +38,14 @@ module "budget" {
   start_date      = var.budget_start_date
   contact_emails  = var.alert_emails
 }
+
+module "aks" {
+  source              = "../../modules/aks"
+  name                = local.name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.main.name
+  subnet_id           = module.network.aks_subnet_id
+  node_count          = var.aks_node_count
+  vm_size             = var.aks_vm_size
+  tags                = local.tags
+}
