@@ -12,3 +12,8 @@ crash.log
 kubeconfig
 secret.yaml
 *.pem
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
