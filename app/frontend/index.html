@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShopStream Orders</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+    form { display: flex; gap: .5rem; margin-bottom: 1rem; }
+    input, button { padding: .5rem; }
+    #msg { color: #b00; }
+  </style>
+</head>
+<body>
+  <h1>ShopStream Orders</h1>
+  <form id="orderForm">
+    <input id="itemInput" placeholder="Item" required>
+    <input id="qtyInput" type="number" min="1" value="1" required>
+    <button type="submit">Add order</button>
+  </form>
+  <p id="msg"></p>
+  <ul id="orderList"></ul>
+
+  <script>
+    const list = document.getElementById('orderList');
+    const msg = document.getElementById('msg');
+    const itemInput = document.getElementById('itemInput');
+    const qtyInput = document.getElementById('qtyInput');
+
+    async function loadOrders() {
+      msg.textContent = '';
+      try {
+        const res = await fetch('/api/orders');
+        if (!res.ok) throw new Error('API returned ' + res.status);
+        const orders = await res.json();
+        list.replaceChildren(...orders.map(o => {
+          const li = document.createElement('li');
+          li.textContent = '#' + o.id + ': ' + o.quantity + ' x ' + o.item;
+          return li;
+        }));
+      } catch (err) {
+        msg.textContent = 'Could not load orders: ' + err.message;
+      }
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ item: itemInput.value, quantity: parseInt(qtyInput.value, 10) })
+      });
+      if (!res.ok) { msg.textContent = 'Could not save order (' + res.status + ')'; return; }
+      itemInput.value = '';
+      loadOrders();
+    });
+
+    loadOrders();
+  </script>
+</body>
+</html>
